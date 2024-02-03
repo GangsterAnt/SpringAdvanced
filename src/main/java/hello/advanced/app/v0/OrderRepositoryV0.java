@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 public class OrderRepositoryV0 {
 
     public void save(String itemId) {
-        //save logic
+        //save logic temp
         if (itemId.equals("ex")) {
             throw new IllegalStateException("Exception!");
         }
