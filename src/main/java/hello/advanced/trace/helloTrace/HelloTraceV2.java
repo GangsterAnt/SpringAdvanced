@@ -3,11 +3,14 @@ package hello.advanced.trace.helloTrace;
 import hello.advanced.trace.TraceId;
 import hello.advanced.trace.TraceStatus;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class HelloTraceV1 {
+//@Scope(value = "request", proxyMode = ScopedProxyMode.TARGET_CLASS)
+public class HelloTraceV2 {
 
     private static final String START_PREFIX = "-->";
     private static final String COMPLETE_PREFIX = "<--";
@@ -23,6 +26,19 @@ public class HelloTraceV1 {
                 addSpace(START_PREFIX, traceId.getLevel()),
                 message);
         return new TraceStatus(traceId, startTimeMs, message);
+    }
+
+    public TraceStatus beginSync(TraceId beforeTraceId, String message) {
+//        TraceId traceId = new TraceId();
+        TraceId nextTrace = beforeTraceId.createNextId();
+        Long startTimeMs = System.currentTimeMillis();
+
+        //print log
+        log.info("[{}] {}{}",
+                nextTrace.getId(),
+                addSpace(START_PREFIX, nextTrace.getLevel())
+                , message);
+        return new TraceStatus(nextTrace, startTimeMs, message);
     }
 
     public void end(TraceStatus status) {
