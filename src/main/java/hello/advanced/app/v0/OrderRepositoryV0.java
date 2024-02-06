@@ -12,5 +12,14 @@ public class OrderRepositoryV0 {
         if (itemId.equals("ex")) {
             throw new IllegalStateException("Exception!");
         }
+        sleep(1000);
+    }
+
+    private void sleep(int millis) {
+        try {
+            Thread.sleep(millis);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
