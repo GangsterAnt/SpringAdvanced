@@ -1,5 +1,8 @@
-package hello.advanced.trace.template;
+package hello.advanced.trace.strategy;
 
+import hello.advanced.trace.strategy.code.ContextV1;
+import hello.advanced.trace.strategy.code.StrategyLogic1;
+import hello.advanced.trace.strategy.code.StrategyLogic2;
 import hello.advanced.trace.template.code.AbstractTemplate;
 import hello.advanced.trace.template.code.SubClassLogic01;
 import hello.advanced.trace.template.code.SubClassLogic02;
@@ -7,17 +10,16 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
 @Slf4j
-public class TemplateMethodTest {
-
+public class ContextV1Test {
     @Test
-    public void testWithoutTemplateMethod() {
+    public void strategyV0() {
         logic01();
         logic02();
     }
 
     private void logic01() {
         long startTime = System.currentTimeMillis();
-        log.info("business logic 01 run"); //Mutable
+        log.info("business logic 01 run");
         long endTime = System.currentTimeMillis();
         long resultTime = endTime - startTime;
         log.info("resultTime == {}", resultTime);
@@ -25,7 +27,7 @@ public class TemplateMethodTest {
 
     private void logic02() {
         long startTime = System.currentTimeMillis();
-        log.info("business logic 02 run"); //Mutable
+        log.info("business logic 02 run");
         long endTime = System.currentTimeMillis();
         long resultTime = endTime - startTime;
         log.info("resultTime == {}", resultTime);
@@ -61,5 +63,20 @@ public class TemplateMethodTest {
         template02.execute();
         log.info("class name 02 == {}", template01.getClass());
         //TemplateMethodTest$2 <- This class's temporary class name is here
+    }
+
+
+    /*
+    전략 패턴 사용
+     */
+    @Test
+    void strategyV1() {
+        StrategyLogic1 strategyLogic1 = new StrategyLogic1();
+        ContextV1 context1 = new ContextV1(strategyLogic1);
+        context1.execute();
+
+        StrategyLogic2 strategyLogic2 = new StrategyLogic2();
+        ContextV1 context2 = new ContextV1(strategyLogic2);
+        context2.execute();
     }
 }
